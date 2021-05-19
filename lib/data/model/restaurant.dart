@@ -24,7 +24,7 @@ class Restaurant {
     description = json["description"];
     pictureId = json["pictureId"];
     city = json["city"];
-    rating = json["rating"];
+    rating = json["rating"].toDouble();
     menus = json["menus"] != null ? Menus.fromJson(json["menus"]) : null;
   }
 
