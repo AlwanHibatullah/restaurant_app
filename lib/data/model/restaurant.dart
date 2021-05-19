@@ -1,29 +1,6 @@
 import 'dart:convert';
 
 class Restaurant {
-  List<Restaurants> restaurants;
-
-  Restaurant({this.restaurants});
-
-  Restaurant.fromJson(Map<String, dynamic> json) {
-    if (json["restaurants"] != null) {
-      restaurants = [];
-      json["restaurants"].forEach((v) {
-        restaurants.add(Restaurants.fromJson(v));
-      });
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    var map = <String, dynamic>{};
-    if (restaurants != null) {
-      map["restaurants"] = restaurants.map((v) => v.toJson()).toList();
-    }
-    return map;
-  }
-}
-
-class Restaurants {
   String id;
   String name;
   String description;
@@ -32,7 +9,7 @@ class Restaurants {
   double rating;
   Menus menus;
 
-  Restaurants(
+  Restaurant(
       {this.id,
       this.name,
       this.description,
@@ -41,7 +18,7 @@ class Restaurants {
       this.rating,
       this.menus});
 
-  Restaurants.fromJson(Map<String, dynamic> json) {
+  Restaurant.fromJson(Map<String, dynamic> json) {
     id = json["id"];
     name = json["name"];
     description = json["description"];
@@ -133,6 +110,6 @@ class Foods {
 
 List<Restaurant> parsedRestaurant(String json) {
   if (json == null) return [];
-  final List parsed = jsonDecode(json)['restaurants'];
-  return parsed.map((json) => Restaurant.fromJson(json)).toList();
+  final Map<String, dynamic> parsed = jsonDecode(json);
+  return parsed['restaurants'].map<Restaurant>((json) => Restaurant.fromJson(json)).toList();
 }
