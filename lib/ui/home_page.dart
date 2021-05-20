@@ -1,19 +1,22 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:new_app/data/model/restaurant.dart';
-import 'package:new_app/pages/detail_page.dart';
+import 'package:restaurant_app/data/model/restaurant.dart';
+import 'package:restaurant_app/ui/detail_page.dart';
+import 'package:restaurant_app/styles/styles.dart';
+import 'package:restaurant_app/widgets/platform_widget.dart';
 
 class HomePage extends StatelessWidget {
   static const routeName = '/home_page';
 
-  Widget _buildRestaurantList(BuildContext context, Restaurant rest) {
+  Widget _buildRestaurantItem(BuildContext context, Restaurant rest) {
     return InkWell(
       child: Container(
         width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.symmetric(vertical: 6),
+        margin: const EdgeInsets.symmetric(vertical: 4),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(12)),
-            color: Colors.white),
+            color: supportColor2),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -51,7 +54,7 @@ class HomePage extends StatelessWidget {
                           Icon(
                             Icons.star,
                             size: 15,
-                            color: Color(0xFFFF6738),
+                            color: secondaryColor,
                           ),
                           SizedBox(
                             width: 4,
@@ -85,11 +88,8 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
-      onTap: (){
-        Navigator.pushNamed(context,
-            DetailPage.routeName,
-            arguments: rest
-        );
+      onTap: () {
+        Navigator.pushNamed(context, DetailPage.routeName, arguments: rest);
       },
     );
   }
@@ -107,16 +107,14 @@ class HomePage extends StatelessWidget {
             shrinkWrap: true,
             itemCount: rest.length,
             itemBuilder: (context, index) {
-              return _buildRestaurantList(context, rest[index]);
+              return _buildRestaurantItem(context, rest[index]);
             });
       },
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        body: SafeArea(
+  Widget _buildPage(BuildContext context) {
+    return SafeArea(
       child: SingleChildScrollView(
           child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -142,6 +140,26 @@ class HomePage extends StatelessWidget {
           _buildList(context)
         ],
       )),
-    ));
+    );
+  }
+
+  Widget _buildAndroid(BuildContext context){
+    return Scaffold(
+        body: _buildPage(context)
+    );
+  }
+
+  Widget _buildIOS(BuildContext context){
+    return CupertinoPageScaffold(
+        child: _buildPage(context)
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return PlatformWidget(
+      androidBuilder: _buildAndroid,
+      iosBuilder: _buildIOS,
+    );
   }
 }

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:new_app/data/model/restaurant.dart';
-import 'package:new_app/pages/detail_page.dart';
-import 'package:new_app/pages/home_page.dart';
+import 'package:restaurant_app/data/model/restaurant.dart';
+import 'package:restaurant_app/ui/detail_page.dart';
+import 'package:restaurant_app/ui/home_page.dart';
+import 'package:restaurant_app/styles/styles.dart';
 
 void main() {
   runApp(MyApp());
@@ -15,8 +16,10 @@ class MyApp extends StatelessWidget {
       title: 'Restaurant App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        primaryColor: primaryColor,
+        accentColor: secondaryColor,
         visualDensity: VisualDensity.adaptivePlatformDensity,
-        primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: supportColor3
       ),
       initialRoute: HomePage.routeName,
       routes: {
