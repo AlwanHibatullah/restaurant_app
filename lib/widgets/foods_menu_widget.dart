@@ -6,7 +6,7 @@ class TagView extends StatelessWidget {
   final List<dynamic> tagsName;
   final Color backgroundColor;
 
-  TagView({@required this.tagsName, this.backgroundColor});
+  TagView({required this.tagsName, required this.backgroundColor});
 
   List<Widget> _buildTagItem() {
     List<Widget> _tags = <Widget>[];

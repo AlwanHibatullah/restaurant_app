@@ -5,7 +5,7 @@ import 'package:restaurant_app/styles/styles.dart';
 class FavoriteButton extends StatefulWidget {
   final double size;
 
-  FavoriteButton({this.size});
+  FavoriteButton({required this.size});
 
   @override
   _FavoriteButtonState createState() => _FavoriteButtonState();
