@@ -5,7 +5,7 @@ import 'package:restaurant_app/data/api/api_service.dart';
 import 'package:restaurant_app/data/model/restaurant.dart';
 import 'package:restaurant_app/provider/list_provider.dart';
 import 'package:restaurant_app/styles/styles.dart';
-import 'package:restaurant_app/ui/detail_page.dart';
+import 'package:restaurant_app/ui/detail/detail_page.dart';
 import 'package:restaurant_app/widgets/restaurant_item.dart';
 import 'package:restaurant_app/widgets/restaurant_item_shimmer.dart';
 import 'package:shimmer/shimmer.dart';

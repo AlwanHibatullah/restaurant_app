@@ -8,11 +8,61 @@ import 'package:restaurant_app/data/api/api_service.dart';
 import 'package:restaurant_app/data/model/restaurant_detail.dart';
 import 'package:restaurant_app/provider/detail_provider.dart';
 import 'package:restaurant_app/styles/styles.dart';
+import 'package:restaurant_app/ui/detail/detail_image.dart';
+import 'package:restaurant_app/ui/detail/detail_name.dart';
 import 'package:restaurant_app/widgets/favorite_button_widget.dart';
 import 'package:restaurant_app/widgets/foods_menu_widget.dart';
 import 'package:restaurant_app/widgets/platform_widget.dart';
 
 class DetailPage extends StatelessWidget {
+  static const routeName = '/detail_page';
+
+  final String restaurantId;
+
+  DetailPage({required this.restaurantId});
+
+  Widget _buildScaffold(BuildContext context) {
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Stack(
+              children: [
+                DetailImage(),
+                SafeArea(
+                    child: InkWell(
+                  child: Container(
+                      margin: const EdgeInsets.all(18),
+                      padding: const EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                        color: secondaryColor,
+                      ),
+                      child: Icon(Icons.arrow_back, color: Colors.white)),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                )),
+              ],
+            ),
+            DetailName(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider<DetailProvider>(
+      create: (_) => DetailProvider(restaurantId: restaurantId),
+      child: _buildScaffold(context),
+    );
+  }
+}
+
+/* class DetailPage extends StatelessWidget {
   static const routeName = '/detail_page';
 
   final String restaurantId;
@@ -315,3 +365,4 @@ class DetailPage extends StatelessWidget {
         ));
   }
 }
+ */
