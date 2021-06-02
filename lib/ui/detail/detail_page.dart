@@ -1,18 +1,16 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:restaurant_app/data/api/api_service.dart';
-import 'package:restaurant_app/data/model/restaurant_detail.dart';
 import 'package:restaurant_app/provider/detail_provider.dart';
 import 'package:restaurant_app/styles/styles.dart';
+import 'package:restaurant_app/ui/detail/detail_category.dart';
+import 'package:restaurant_app/ui/detail/detail_description.dart';
 import 'package:restaurant_app/ui/detail/detail_image.dart';
+import 'package:restaurant_app/ui/detail/detail_menu.dart';
 import 'package:restaurant_app/ui/detail/detail_name.dart';
-import 'package:restaurant_app/widgets/favorite_button_widget.dart';
-import 'package:restaurant_app/widgets/foods_menu_widget.dart';
-import 'package:restaurant_app/widgets/platform_widget.dart';
+import 'package:restaurant_app/ui/detail/detail_navbar.dart';
+import 'package:restaurant_app/ui/detail/detail_review.dart';
 
 class DetailPage extends StatelessWidget {
   static const routeName = '/detail_page';
@@ -26,6 +24,7 @@ class DetailPage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Stack(
               children: [
@@ -47,9 +46,14 @@ class DetailPage extends StatelessWidget {
               ],
             ),
             DetailName(),
+            DetailCategory(),
+            DetailDescription(),
+            DetailMenu(),
+            DetailReview()
           ],
         ),
       ),
+      bottomNavigationBar: DetailNavbar(),
     );
   }
 
