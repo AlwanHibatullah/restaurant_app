@@ -16,6 +16,8 @@ import 'package:shimmer/shimmer.dart';
 class HomePage extends StatelessWidget {
   static const routeName = '/home_page';
 
+  final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
+
   Widget _buildList(BuildContext context) {
     return Consumer<ListProvider>(builder: (context, state, _) {
       if (state.state == ResultState.Loading) {
@@ -24,10 +26,10 @@ class HomePage extends StatelessWidget {
             shrinkWrap: true,
             itemCount: 5,
             itemBuilder: (context, index) => Shimmer.fromColors(
-              child: RestaurantItemShimmer(),
-              baseColor: Colors.grey[400]!,
-              highlightColor: Colors.white,
-            ));
+                  child: RestaurantItemShimmer(),
+                  baseColor: Colors.grey[400]!,
+                  highlightColor: Colors.white,
+                ));
       } else if (state.state == ResultState.HasData) {
         final List<Restaurant> restaurant = state.result!.restaurants;
         return ListView.builder(
@@ -60,22 +62,39 @@ class HomePage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         SafeArea(
-            child: Align(
-              child: InkWell(
-                child: Container(
-                    margin: const EdgeInsets.all(18),
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
-                      color: secondaryColor,
-                    ),
-                    child: Icon(Icons.search, color: Colors.white)),
-                onTap: () {
-                  Navigator.pushNamed(context, SearchPage.routeName);
-                },
-              ),
-              alignment: Alignment.topRight,
-            )),
+            child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            InkWell(
+              child: Container(
+                  margin: const EdgeInsets.all(18),
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                    color: secondaryColor,
+                  ),
+                  child: Icon(Icons.menu, color: Colors.white)),
+              onTap: () {
+                /* Scaffold.of(context).openDrawer(); */
+                _key.currentState!.openDrawer();
+              },
+            ),
+            InkWell(
+              child: Container(
+                  margin: const EdgeInsets.all(18),
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                    color: secondaryColor,
+                  ),
+                  child: Icon(Icons.search, color: Colors.white)),
+              onTap: () {
+                Navigator.pushNamed(context, SearchPage.routeName);
+              },
+            ),
+          ],
+        )),
         Container(
           padding: const EdgeInsets.fromLTRB(18, 18, 18, 10),
           child: Text(
@@ -99,7 +118,40 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _buildAndroid(BuildContext context) {
-    return Scaffold(body: _buildPage(context));
+    return Scaffold(
+        key: _key,
+        body: _buildPage(context),
+        drawer: Drawer(
+          child: ListView(
+            children: [
+              DrawerHeader(
+                  decoration: BoxDecoration(color: secondaryColor),
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        bottom: 12,
+                        left: 12,
+                        child: Text(
+                          'Restaurant App',
+                          style: GoogleFonts.raleway(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      )
+                    ],
+                  )),
+              ListTile(
+                leading: Icon(Icons.home),
+                title: Text('Home', style: GoogleFonts.raleway()),
+              ),
+              ListTile(
+                leading: Icon(Icons.settings),
+                title: Text('Settings', style: GoogleFonts.raleway()),
+              )
+            ],
+          ),
+        ));
   }
 
   Widget _buildIOS(BuildContext context) {
