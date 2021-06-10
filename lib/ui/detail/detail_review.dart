@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:restaurant_app/data/model/restaurant_detail.dart';
 import 'package:restaurant_app/provider/detail_provider.dart';
 import 'package:restaurant_app/styles/styles.dart';
+import 'package:restaurant_app/utils/result_state.dart';
 import 'package:shimmer/shimmer.dart';
 
 class DetailReview extends StatelessWidget {
@@ -119,29 +120,38 @@ class DetailReview extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Text(
-                                  review.name,
-                                  style: GoogleFonts.raleway(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 16),
+                                Flexible(
+                                  flex: 1,
+                                  child: Text(
+                                    review.name,
+                                    style: GoogleFonts.raleway(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 16),
+                                  ),
                                 ),
                                 SizedBox(
                                   height: 4,
                                 ),
-                                Text(
-                                  review.review,
-                                  style: GoogleFonts.raleway(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 16),
+                                Flexible(
+                                  flex: 1,
+                                  child: Text(
+                                    review.review,
+                                    style: GoogleFonts.raleway(
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 16),
+                                  ),
                                 ),
                                 SizedBox(
                                   height: 4,
                                 ),
-                                Text(
-                                  review.date,
-                                  style: GoogleFonts.raleway(
-                                      fontWeight: FontWeight.w400,
-                                      fontStyle: FontStyle.italic),
+                                Flexible(
+                                  flex: 1,
+                                  child: Text(
+                                    review.date,
+                                    style: GoogleFonts.raleway(
+                                        fontWeight: FontWeight.w400,
+                                        fontStyle: FontStyle.italic),
+                                  ),
                                 ),
                               ],
                             ),

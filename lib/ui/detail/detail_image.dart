@@ -4,6 +4,7 @@ import 'package:restaurant_app/data/api/api_service.dart';
 import 'package:restaurant_app/data/model/restaurant_detail.dart';
 import 'package:restaurant_app/provider/detail_provider.dart';
 import 'package:restaurant_app/styles/styles.dart';
+import 'package:restaurant_app/utils/result_state.dart';
 import 'package:shimmer/shimmer.dart';
 
 class DetailImage extends StatelessWidget {
@@ -19,11 +20,11 @@ class DetailImage extends StatelessWidget {
                         width: double.infinity,
                         height: 320,
                         decoration: BoxDecoration(
-                          color: secondaryColor,
+                            color: secondaryColor,
                             borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(24),
-                          bottomRight: Radius.circular(24),
-                        ))),
+                              bottomLeft: Radius.circular(24),
+                              bottomRight: Radius.circular(24),
+                            ))),
                     baseColor: Colors.grey[400]!,
                     highlightColor: Colors.white));
           case ResultState.HasData:
@@ -45,7 +46,7 @@ class DetailImage extends StatelessWidget {
           case ResultState.NoData:
             return ClipRRect(
               child: Image.asset(
-                'assets\\no_data.png',
+                'assets/images/no_data.png',
                 height: 320,
                 width: double.infinity,
                 fit: BoxFit.cover,
@@ -57,7 +58,7 @@ class DetailImage extends StatelessWidget {
           case ResultState.Error:
             return ClipRRect(
               child: Image.asset(
-                'assets\\error.png',
+                'assets/images/error.png',
                 height: 320,
                 width: double.infinity,
                 fit: BoxFit.cover,

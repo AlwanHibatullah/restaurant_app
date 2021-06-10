@@ -2,10 +2,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+
+import 'package:restaurant_app/data/model/restaurant.dart';
+import 'package:restaurant_app/provider/database_provider.dart';
 import 'package:restaurant_app/styles/styles.dart';
-import 'package:restaurant_app/widgets/favorite_button_widget.dart';
 
 class DetailNavbar extends StatelessWidget {
+  final Restaurant restaurant;
+
+  DetailNavbar({
+    required this.restaurant,
+  });
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -36,7 +45,7 @@ class DetailNavbar extends StatelessWidget {
                         })
                     : ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text("This feature will coming soon"),
-                        duration: Duration(seconds: 1),
+                        duration: Duration(seconds: 3),
                       ));
               },
               child: Text(
@@ -55,17 +64,29 @@ class DetailNavbar extends StatelessWidget {
           ),
           Expanded(
               flex: 1,
-              child: FavoriteButton(
-                size: 32,
+              child: Consumer<DatabaseProvider>(
+                builder: (context, provider, _) {
+                  return FutureBuilder<bool>(
+                    future: provider.isFavorited(restaurant.id!),
+                    builder: (context, snapshot) {
+                      var isBookmarked = snapshot.data ?? false;
+                      return IconButton(
+                          onPressed: () => isBookmarked
+                              ? provider.removeFavorite(restaurant.id!)
+                              : provider.addFavorite(restaurant),
+                          icon: Icon(
+                            isBookmarked
+                                ? Icons.favorite
+                                : Icons.favorite_border,
+                            color: secondaryColor,
+                            size: 32,
+                          ));
+                    },
+                  );
+                },
               )),
         ],
       ),
     );
   }
 }
-
-/*
-
-
-
- */

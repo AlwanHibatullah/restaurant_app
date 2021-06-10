@@ -2,17 +2,12 @@ import 'package:connectivity/connectivity.dart';
 import 'package:flutter/foundation.dart';
 import 'package:restaurant_app/data/api/api_service.dart';
 import 'package:restaurant_app/data/model/restaurant_detail.dart';
-
-enum ResultState { Loading, NoData, HasData, Error }
+import 'package:restaurant_app/utils/result_state.dart';
 
 class DetailProvider with ChangeNotifier {
-  final String restaurantId;
+  final ApiService apiService;
 
-  DetailProvider({required this.restaurantId}) {
-    _fetchDetail();
-  }
-
-  final apiService = ApiService();
+  DetailProvider({required this.apiService});
 
   ResultState? _state;
   String _message = '';
@@ -22,7 +17,7 @@ class DetailProvider with ChangeNotifier {
   String get message => _message;
   RestaurantsDetailResult? get detail => _detail;
 
-  Future<dynamic> _fetchDetail() async {
+  Future<dynamic> fetchDetail(String restaurantId) async {
     var checkConnection = await (Connectivity().checkConnectivity());
     if (checkConnection == ConnectivityResult.mobile ||
         checkConnection == ConnectivityResult.wifi) {

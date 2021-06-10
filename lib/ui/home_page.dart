@@ -2,21 +2,31 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:restaurant_app/data/api/api_service.dart';
 import 'package:restaurant_app/data/model/restaurant.dart';
 import 'package:restaurant_app/provider/list_provider.dart';
 import 'package:restaurant_app/styles/styles.dart';
 import 'package:restaurant_app/ui/detail/detail_page.dart';
+import 'package:restaurant_app/ui/favorites_page.dart';
 import 'package:restaurant_app/ui/search_page.dart';
+import 'package:restaurant_app/ui/settings_page.dart';
+import 'package:restaurant_app/utils/notification_helper.dart';
+import 'package:restaurant_app/utils/result_state.dart';
 import 'package:restaurant_app/widgets/platform_widget.dart';
 import 'package:restaurant_app/widgets/restaurant_item.dart';
 import 'package:restaurant_app/widgets/restaurant_item_shimmer.dart';
+import 'package:restaurant_app/widgets/state_widget.dart';
 import 'package:shimmer/shimmer.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   static const routeName = '/home_page';
 
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
+  final NotificationHelper _helper = NotificationHelper();
 
   Widget _buildList(BuildContext context) {
     return Consumer<ListProvider>(builder: (context, state, _) {
@@ -43,13 +53,15 @@ class HomePage extends StatelessWidget {
                   child: RestaurantItem(restaurant: restaurant[index]),
                   onTap: () {
                     Navigator.pushNamed(context, DetailPage.routeName,
-                        arguments: restaurant[index].id);
+                        arguments: restaurant[index]);
                   });
             });
       } else if (state.state == ResultState.NoData) {
-        return Center(child: Text(state.message));
+        return StateWidget(
+            imageFile: 'assets/images/no_data.svg', title: 'No Data');
       } else if (state.state == ResultState.Error) {
-        return Center(child: Text(state.message));
+        return StateWidget(
+            imageFile: 'assets/images/no_connection.svg', title: state.message);
       } else {
         return Center(child: Text(''));
       }
@@ -76,7 +88,6 @@ class HomePage extends StatelessWidget {
                   ),
                   child: Icon(Icons.menu, color: Colors.white)),
               onTap: () {
-                /* Scaffold.of(context).openDrawer(); */
                 _key.currentState!.openDrawer();
               },
             ),
@@ -144,10 +155,25 @@ class HomePage extends StatelessWidget {
               ListTile(
                 leading: Icon(Icons.home),
                 title: Text('Home', style: GoogleFonts.raleway()),
+                onTap: () {
+                  _key.currentState!.openEndDrawer();
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.favorite),
+                title: Text('Favorites', style: GoogleFonts.raleway()),
+                onTap: () {
+                  _key.currentState!.openEndDrawer();
+                  Navigator.pushNamed(context, FavoritePage.routeName);
+                },
               ),
               ListTile(
                 leading: Icon(Icons.settings),
                 title: Text('Settings', style: GoogleFonts.raleway()),
+                onTap: () {
+                  _key.currentState!.openEndDrawer();
+                  Navigator.pushNamed(context, SettingsPage.routeName);
+                },
               )
             ],
           ),
@@ -159,13 +185,22 @@ class HomePage extends StatelessWidget {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _helper.configureSelectNotificationSubject(context, DetailPage.routeName);
+  }
+
+  @override
+  void dispose() {
+    selectNotificationSubject.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<ListProvider>(
-      create: (_) => ListProvider(apiService: ApiService()),
-      child: PlatformWidget(
-        androidBuilder: _buildAndroid,
-        iosBuilder: _buildIOS,
-      ),
+    return PlatformWidget(
+      androidBuilder: _buildAndroid,
+      iosBuilder: _buildIOS,
     );
   }
 }

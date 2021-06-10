@@ -2,8 +2,7 @@ import 'package:connectivity/connectivity.dart';
 import 'package:flutter/foundation.dart';
 import 'package:restaurant_app/data/api/api_service.dart';
 import 'package:restaurant_app/data/model/restaurant.dart';
-
-enum ResultState { Loading, NoData, HasData, Error }
+import 'package:restaurant_app/utils/result_state.dart';
 
 class ListProvider with ChangeNotifier {
   final ApiService apiService;
@@ -30,7 +29,8 @@ class ListProvider with ChangeNotifier {
 
   Future<dynamic> _fetchList({String query = ""}) async {
     var checkConnection = await (Connectivity().checkConnectivity());
-    if (checkConnection == ConnectivityResult.mobile || checkConnection == ConnectivityResult.wifi){
+    if (checkConnection == ConnectivityResult.mobile ||
+        checkConnection == ConnectivityResult.wifi) {
       try {
         _state = ResultState.Loading;
         notifyListeners();
@@ -57,7 +57,7 @@ class ListProvider with ChangeNotifier {
         notifyListeners();
         return _message = "Error : $e";
       }
-    } else if (checkConnection == ConnectivityResult.none){
+    } else if (checkConnection == ConnectivityResult.none) {
       _state = ResultState.Error;
       notifyListeners();
       return _message = "No Internet Connection";
